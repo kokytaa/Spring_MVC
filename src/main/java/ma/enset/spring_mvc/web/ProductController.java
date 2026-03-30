@@ -19,24 +19,25 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductRepository productRepository;
-    @GetMapping("user/index")
+    @GetMapping("/index")
     //@PreAuthorize("hasRole('USER')")
     public String index(Model model) {
-        List<Product> products = productRepository.findAll();
+       List<Product> products = productRepository.findAll();
         model.addAttribute("productList", products);
         return "products";
     }
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/user/index";
+        return "redirect:/index";
     }
     @GetMapping("/delete")
 
     public String delete(@RequestParam(name = "id") Long id){
         productRepository.deleteById(id);
-        return "redirect:/user/index";
+        return "redirect:/index";
     }
+
     /*
     @GetMapping("/admin/newProduct")
     @PreAuthorize("hasRole('ADMIN')")
