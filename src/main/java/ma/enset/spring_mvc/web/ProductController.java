@@ -38,20 +38,21 @@ public class ProductController {
         return "redirect:/index";
     }
 
-    /*
-    @GetMapping("/admin/newProduct")
-    @PreAuthorize("hasRole('ADMIN')")
+
+    @GetMapping("/newProduct")
     public String newProduct(Model model) {
         model.addAttribute("product", new Product());
         return "new-product";
-    }
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/admin/saveProduct")
+    } @PostMapping("/saveProduct")
     public String saveProduct(@Valid Product product, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) return "new-product";
         productRepository.save(product);
-        return "redirect:/admin/newProduct";
+        return "redirect:/newProduct";
     }
+    /*    @PreAuthorize("hasRole('ADMIN')")
+
+    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/notAuthorized")
     public String notAuthorized(){
         return "notAuthorized";
