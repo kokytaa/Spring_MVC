@@ -19,44 +19,50 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductRepository productRepository;
-    @GetMapping("/index")
-    //@PreAuthorize("hasRole('USER')")
+    @GetMapping("/user/index")
+    @PreAuthorize("hasRole('USER')")
     public String index(Model model) {
        List<Product> products = productRepository.findAll();
         model.addAttribute("productList", products);
         return "products";
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/")
     public String home() {
-        return "redirect:/index";
+        return "redirect:/user/index";
     }
-    @GetMapping("/delete")
+    @PostMapping ("/admin/delete")
 
     public String delete(@RequestParam(name = "id") Long id){
         productRepository.deleteById(id);
-        return "redirect:/index";
+        return "redirect:/user/index";
     }
 
 
-    @GetMapping("/newProduct")
+    @GetMapping("/admin/newProduct")
     public String newProduct(Model model) {
         model.addAttribute("product", new Product());
         return "new-product";
-    } @PostMapping("/saveProduct")
+
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/saveProduct")
     public String saveProduct(@Valid Product product, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) return "new-product";
         productRepository.save(product);
-        return "redirect:/newProduct";
+        return "redirect:/admin/newProduct";
     }
-    /*    @PreAuthorize("hasRole('ADMIN')")
-
-    @PreAuthorize("hasRole('ADMIN')")
-
     @GetMapping("/notAuthorized")
     public String notAuthorized(){
         return "notAuthorized";
     }
+    /*
+
+
+
+
+    */
+
     @GetMapping("/login")
     public String login(){
         return "login";
@@ -65,6 +71,5 @@ public class ProductController {
     public String logout(HttpSession session){
         session.invalidate();
         return "login";
-    }*/
-
+    }
 }

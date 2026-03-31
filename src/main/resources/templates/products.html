@@ -2,7 +2,9 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-     layout:decorate="layout1.html"><!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+
+      layout:decorate="layout1.html"><!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 -->
 
 
@@ -13,8 +15,8 @@
 </head>
 <body>
 <div class="p-3" layout:fragment="content1">
-    <div class="p-3">
-        <a class="btn btn-primary" th:href="@{/newProduct}">New Product</a>
+    <div class="p-3" sec:authorize="hasRole('ADMIN')">
+        <a class="btn btn-primary" th:href="@{/admin/newProduct}">New Product</a>
     </div>
     <table class="table">
         <thead>
@@ -26,9 +28,12 @@
             <td th:text="${p.name}"></td>
             <td th:text="${p.price}"></td>
             <td th:text="${p.quantity}"></td>
-            <td>
-            <a  class="btn btn-danger" onclick="return confirm('etes vous sure?')"
-                th:href="@{/delete(id=${p.id})}">Delete</a>
+            <td sec:authorize="hasRole('ADMIN')">
+                <form method="post" th:action="@{/admin/delete(id=${p.id})}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                <a  class="btn btn-danger" onclick="return confirm('etes vous sure?')"
+                th:href="@{/admin/delete(id=${p.id})}">Delete</a>
             </td>
 
         </tr>
